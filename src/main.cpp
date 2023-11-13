@@ -25,6 +25,7 @@
 
 
 #define DHTPIN 13     // Digital pin connected to the DHT sensor - Pin D7 (GPIO13)
+#define DHTVCC 5      // Pin connected to the VCC DHT sensor - Pin D1 (GPIO5)
 // Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
 // Pin 15 can work but DHT must be disconnected during program upload.
 #define DHTTYPE    DHT11     // DHT 11
@@ -36,7 +37,7 @@ sensors_event_t event;
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT); // Led Wifi connection
-  pinMode(5, OUTPUT); // Power Supply DHT11 - Pin D1 (GPIO5)
+  pinMode(DHTVCC, OUTPUT); // Power Supply DHT11 - Pin D1 (GPIO5)
 
 
   ConnectWiFi_STA(true);
@@ -90,7 +91,7 @@ void loop() {
   HandleMqtt();
   
   // Enable DHT11
-  digitalWrite(5, HIGH);
+  digitalWrite(DHTVCC, HIGH);
   delay (500);
 
   //Read Temperature and humidity
@@ -102,7 +103,7 @@ void loop() {
   }
    
   // Disable DHT11
-  digitalWrite(5, LOW);
+  digitalWrite(DHTVCC, LOW);
   delay(500);
 
   //Deep Sleep
