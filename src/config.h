@@ -1,5 +1,5 @@
 //Variables versiones
-String version = "v1.0";
+String version = "v2.0";
 
 //Configuración WIFI
 const char* ssid     = "Domo";
@@ -32,3 +32,8 @@ unsigned long previousWifiMillis = 0;
 unsigned long currentMillis = 0;
 unsigned long previousPushMillis = 0;
 unsigned long intervalWifi = 10000;
+
+// variables para tiempo lectura
+unsigned long previousMillis = 0;
+unsigned long intervalRead = 1000;
+unsigned long intervalSleep = 10000;
