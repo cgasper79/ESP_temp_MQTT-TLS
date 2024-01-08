@@ -3,7 +3,7 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-sch/ESP_temp-backups/ESP_temp-2023-11-13_082903.zip
+sch/ESP_temp-backups/
 sch/ESP_temp.kicad_pcb
 sch/ESP_temp.kicad_prl
 .gitignore
