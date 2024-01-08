@@ -1,5 +1,5 @@
 //Version
-String version = "v2.1";
+String version = "v2.0-TLS";
 
 //WIFI config
 const char* ssid     = "Blanes";
@@ -32,7 +32,7 @@ unsigned long intervalRead = 1000;
 unsigned long intervalSleep = 10000;
 
 //MQTT config
-const char* MQTT_BROKER_ADRESS = "gaspe.com";
+const char* MQTT_BROKER_ADRESS = "mqtt.gasperwebdesign.com";
 const uint16_t MQTT_PORT = 8883;
 const char* MQTT_CLIENT_NAME = "ESP32_Temp_Blanes";
 const char* MQTT_USER = "guest";
