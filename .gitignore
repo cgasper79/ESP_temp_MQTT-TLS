@@ -8,3 +8,4 @@ sch/ESP_temp.kicad_pcb
 sch/ESP_temp.kicad_prl
 .gitignore
 sch/ESP_temp.kicad_pro
+src/config.h

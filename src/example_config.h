@@ -1,9 +1,9 @@
 //Version
-String version = "v2.1";
+String version = "v2.0-SSL";
 
 //WIFI config
-const char* ssid     = "Blanes";
-const char* password = "gascoing1979";
+const char* ssid     = "YOUR SSID";
+const char* password = "YOUR PASSWORD";
 const char* hostname = "ESP32_Temp";
 
 IPAddress ip(192, 168, 0, 6);
@@ -32,13 +32,13 @@ unsigned long intervalRead = 1000;
 unsigned long intervalSleep = 10000;
 
 //MQTT config
-const char* MQTT_BROKER_ADRESS = "mqtt.gasperwebdesign.com";
+const char* MQTT_BROKER_ADRESS = "YOUR IP OR HOST MQTT";
 const uint16_t MQTT_PORT = 8883;
 const char* MQTT_CLIENT_NAME = "ESP32_Temp_Blanes";
 const char* MQTT_USER = "guest";
 const char* MQTT_PASS = "123456";
-const char MQTT_PUB_TOPIC_TEMP[] = "dispositivos/sensores/blanes/temperature";
-const char MQTT_PUB_TOPIC_HUMIDITY[] = "dispositivos/sensores/blanes/humidity";
+const char MQTT_PUB_TOPIC_TEMP[] = "your/topic/sensor/temperature";
+const char MQTT_PUB_TOPIC_HUMIDITY[] = "your/topic/sensor/humidity";
 
 
 // Certificates
@@ -59,13 +59,6 @@ m8xKzXw0OaBPCDLaqP7Gyw4qvbZ6s2BFCgwxQZ0PTA89sMSHxwDHC0/UKBnankUV
 uxBE5T7/+k/W79hB5NRIhEvGbev7cMAGc+EzlYlPucGRY8MZPQsRqErQ0jt6jD/f
 VWLitDE7MdnPYjooxSE3B6MGm5naX3zxfEWw4Q8eNem949FXs3lJD2vpGR+rGkj8
 XQYIlupR3T2BvlJt0P+BuO8jA+GENTuYzBf7AgMBAAGjUzBRMB0GA1UdDgQWBBSN
-9MAakH19t+zvonlAesvJsjCjHDAfBgNVHSMEGDAWgBSN9MAakH19t+zvonlAesvJ
-sjCjHDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCMx7i05ZPc
-cIBI6DoW70TNcMH1GLluBakJ3ScQiM3KuiAAvg+zA/sYryfTrA9/WnBrBoIz4GvP
-/FyUWj7CqC6ViVyEyqoUse4lNBRUa1Dq1xjjPP/uWPxMEVvups5QcyBxxfGDHbXe
-/eznCHgU6FCtSj5mj2nxfSrGtlSrE3J1ee6F5D0Oz9RnTWI4su+SEvAqJQrM63ew
-9DAId/Zn2mSU9bWxp152v1HIc2DjxXLbORup1Y00chCrNkAgITEmWqOFY9O4WRAv
-XpACbOO8aoDx2F4jVYiv/PJQTHnosuSumpofqvZDEO9UU9tNTQN26CZgPRZ7N0CQ
 SSDvc2Uot9DE
 -----END CERTIFICATE-----
 )EOF";
@@ -86,8 +79,6 @@ LNCPH/hhu8O+8TJqxp3XhaHom9kkK2INeUnHvMMpGcez1VKC/6r7E7bGSd5fzWKt
 cO2vQCWTzuDebxloAr0EguaWTIenP7/WuPEJ4XUJmTWF0MsG41KiCBcSlT42L+YQ
 KC0ZEWvgRfi4nsMZg30tAC6Y4uVRktMQ5IUCAwEAATANBgkqhkiG9w0BAQsFAAOC
 AQEAC3dIkIr96bLj5gGS2hWta8TVQhBe2p59IRM2l94LI75ZqTfvBrfWRyoCSY90
-CbptZWoqDm3CKIfys781vX+pJtSWIQ9sSW98uikR1CGxla24YyHQZ3qb2jrM++e3
-a/8Qg5FaO4xOjwftRAXv5G3Gkk+X2l1Z4YzADzFHmnAuz5DFOwwSVlNxN2OdnbM+
 GNVmV+DXvMsdiPT5z+EZB2eUfs72u8Njt7cpO8yzc2RntOVYX8eiS2JnIFVuuul+
 p2I7yoAHAhQChz7ydmKoUH/RfEpguEpjRToBHdEwHZIZZMJGGGMhswue8nVl6b4a
 i8QB7CeGSc/pxrERKTTmgX3NQA==
@@ -98,9 +89,6 @@ static const char privkey[] PROGMEM = R"KEY(
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkv0GkOKqQQxt/
 CRgIx5A8Sczt0tNna0PxK84mSgW5cU2YLVfRaNJQkEzzGuoY8pJEssf+U2CDUp7T
-zDbpk6LPY6lma5T79XmNSo9XJoInBU1iZJpUiCzQjx/4YbvDvvEyasad14Wh6JvZ
-JCtiDXlJx7zDKRnHs9VSgv+q+xO2xkneX81irf7nXK2W1FWP0MV/kLPLnQtcQmla
-zxZzbLTvVD9amqNAT3QhIWdqmL+P500ZvGvaPnDtr0Alk87g3m8ZaAK9BILmlkyH
 pz+/1rjxCeF1CZk1hdDLBuNSoggXEpU+Ni/mECgtGRFr4EX4uJ7DGYN9LQAumOLl
 UZLTEOSFAgMBAAECggEBAJeHjqG0uTT9dHHw9FlG7OR24PWyH14VLCXMK83N8dvy
 WfNpaUekSSVuxEgqbj1KB70GT6seFzxSpuGaCLvoXiywtyQMOblRvF53wMXhFn87
@@ -117,11 +105,6 @@ k7f/+cqah8UCgYB2X50tz7FmkcoLGTbLu3I91A+JS6TYL7sqTOu9CsusPxE5Zmaj
 dVw/ibytjj2IFCd9xWJuQAwqpFG7B41qlFbLVRRnu0h6QfDvFeSP2RApKXj/ULL7
 s+rqSYZBmNcVLosLkYARRldCDBMCNaQb7ffLZiG1jJcK24r5N5Vi5pQEAQKBgAHF
 0UFtQl/BCWqgtrRqmYDCWFvzBRlq35vw4vJewkT1GtELJzw0ZySe0mp0F0rCX3rV
-xw+5L7P++WueteqB+BrmiTIUjZ4SqkDjF/E7D5GGRYP1VMVQTGndsPYx8t5tglwV
-M+B9oyTQaQvLLTN8pDiU1QTqmCzUc3BYgg9vUMqtAoGAPHp/6Z2fbKhcEmlSjioO
-qpP5HK5OeEz5jSwDwapuIWAsuN240sf0JrbH6Uahf+zp+RoardH475G+WwOeAPl2
-resfjojV7copO4JWC8NQFHS+Oi4s4UWiwsV3mQbzYSWBfZJfe2yVtV5eyLiUYJeL
-LBeY9Q57pKt3C8/To2IE2hw=
 -----END PRIVATE KEY-----
 )KEY";
 

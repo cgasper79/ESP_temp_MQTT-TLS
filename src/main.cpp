@@ -2,10 +2,10 @@
  * @file main.cpp
  * @author cgasper79
  * @brief 
- * @version 2.0
- * @date 2023-11-09
+ * @version 2.0-SSL
+ * @date 2024-01-08
  * 
- * @copyright Copyright (c) 2023
+ * @copyright Copyright (c) 2024
  * 
  */
 
@@ -17,8 +17,12 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <AsyncMqttClient.h>
+#include <WiFiClientSecure.h> 
+#include <time.h>
+
 
 #include "config.h"
+#include "NtpUtils.hpp"
 #include "WifiUtils.hpp"
 #include "MQTT.hpp"
 #include "MqttUtils.hpp"
@@ -30,18 +34,19 @@
 // Pin 15 can work but DHT must be disconnected during program upload.
 #define DHTTYPE    DHT11     // DHT 11
 
+
 DHT_Unified dht(DHTPIN, DHTTYPE);
 uint32_t delayMS;
 sensors_event_t event;
+
 
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT); // Led Wifi connection
   pinMode(DHTVCC, OUTPUT); // Power Supply DHT11 - Pin D1 (GPIO5)
 
-
-  ConnectWiFi_STA(true);
-  InitMqtt();
+  ConnectWiFi_STA(true); //Ini WIFI
+  InitMqtt(); //Ini MQTT
   
 
   // Initialize sensor device.
@@ -54,7 +59,7 @@ void setup() {
   delayMS = sensor.min_delay / 1000;
 }
 
-
+// Read Temperature
 float getTemperature(){
    dht.temperature().getEvent(&event);
    while (isnan(event.temperature)) {
@@ -63,6 +68,7 @@ float getTemperature(){
    return event.temperature;
 }
 
+// Read Humidity
 float getHumidity(){
    dht.humidity().getEvent(&event);
    while (isnan(event.temperature)) {
@@ -71,6 +77,7 @@ float getHumidity(){
    return event.relative_humidity;
 }
 
+//Wait to read
 void waitRead(){
  //Serial.println("Esperando 1 segundo");
  while ((currentMillis - previousMillis) <= delayMS){
@@ -80,29 +87,29 @@ void waitRead(){
   currentMillis = millis();
 }
 
+//Main Loop
+
 void loop() {
   
   HandleMqtt();
+ 
   // Enable DHT11
   digitalWrite(DHTVCC, HIGH);
   waitRead();
-
-  //Read Temperature and humidity
-  PublisMqtt("dispositivos/sensores/rack/temperature",getTemperature());
+   
+  //Read Temperature and humidity and publish in topic
+  PublisMqtt(MQTT_PUB_TOPIC_TEMP,getTemperature());
   Serial.println(getTemperature());
   waitRead();
-  PublisMqtt("dispositivos/sensores/rack/humidity",getHumidity());
+  PublisMqtt(MQTT_PUB_TOPIC_HUMIDITY,getHumidity());
 	Serial.println(getHumidity());
-  
-  // Disable DHT11
-  //digitalWrite(DHTVCC, LOW);
-  //delay(50);
+ 
 
   //Deep Sleep for 1 hour only 10 seconds connected
   if (currentMillis >= intervalSleep){
     Serial.println ("Go to sleep");
     ESP.deepSleep(3600000000);
   }
-  
+
 }
 
