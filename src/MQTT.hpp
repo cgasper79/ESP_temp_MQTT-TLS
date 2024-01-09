@@ -1,6 +1,14 @@
 
-WiFiClient espClient;
-PubSubClient mqttClient(espClient);
+#ifdef MQTT_TLS 
+	// Secure client connection class
+	BearSSL::WiFiClientSecure espClient;
+	// Secure client connection class
+	PubSubClient mqttClient (espClient);
+#else
+	WiFiClient espClient;
+	PubSubClient mqttClient (espClient);
+#endif
+
 
 void SuscribeMqtt()
 {

@@ -1,4 +1,4 @@
-// Funcionamiento como cliente wifi
+// WIFI Client
 void ConnectWiFi_STA(bool useStaticIP = false)
 {
    Serial.println("");
@@ -43,7 +43,7 @@ void ConnectWiFi_STA(bool useStaticIP = false)
    
 }
 
-// Reconexion Wifi si detecta que no está conectado
+// Reconnect to WiFi if not connected
 void ReconnectionWifi(){
   
   miRSSI = String (WiFi.RSSI()) + "db";
@@ -58,7 +58,7 @@ void ReconnectionWifi(){
   }
 }
 
-//Funcionamiento como AP
+//AP WIFI
 void ConnectWiFi_AP(bool useStaticIP = true)
 { 
    Serial.println("");
