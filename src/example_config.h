@@ -1,5 +1,5 @@
 //Version
-String version = "v2.0-SSL";
+String version = "v1.1-TLS";
 
 //define user, if you don't use comment please
 #define MQTT_TLS  // to use MQTT TLS 

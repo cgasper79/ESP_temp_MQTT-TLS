@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author cgasper79
  * @brief 
- * @version 2.0-SSL
+ * @version 1.1-TLS
  * @date 2024-01-08
  * 
  * @copyright Copyright (c) 2024
