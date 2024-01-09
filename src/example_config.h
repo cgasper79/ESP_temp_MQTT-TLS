@@ -1,6 +1,10 @@
 //Version
 String version = "v2.0-SSL";
 
+//define user, if you don't use comment please
+#define MQTT_TLS  // to use MQTT TLS 
+#define ESP_SLEEP 3600000000 // Time in uS to sleep 
+
 //WIFI config
 const char* ssid     = "YOUR SSID";
 const char* password = "YOUR PASSWORD";
@@ -33,7 +37,11 @@ unsigned long intervalSleep = 10000;
 
 //MQTT config
 const char* MQTT_BROKER_ADRESS = "YOUR IP OR HOST MQTT";
-const uint16_t MQTT_PORT = 8883;
+#ifdef MQTT_TLS
+	const uint16_t MQTT_PORT = 8883;
+#else
+	const uint16_t MQTT_PORT = 1883;
+#endif
 const char* MQTT_CLIENT_NAME = "ESP32_Temp_Blanes";
 const char* MQTT_USER = "guest";
 const char* MQTT_PASS = "123456";
@@ -42,6 +50,8 @@ const char MQTT_PUB_TOPIC_HUMIDITY[] = "your/topic/sensor/humidity";
 
 
 // Certificates
+
+#ifdef MQTT_TLS
 
 static const char cacert[] PROGMEM = R"EOF(
 
@@ -108,7 +118,7 @@ s+rqSYZBmNcVLosLkYARRldCDBMCNaQb7ffLZiG1jJcK24r5N5Vi5pQEAQKBgAHF
 -----END PRIVATE KEY-----
 )KEY";
 
-
+#endif
 
 
 

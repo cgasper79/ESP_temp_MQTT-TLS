@@ -1,18 +1,24 @@
 
+#ifdef MQTT_TLS
+	// X.509 parsed 
+	BearSSL::X509List cert(cacert);
+	BearSSL::X509List client_crt(client_cert);
+	BearSSL::PrivateKey key(privkey);
+#endif
 
-// X.509 parsed 
-BearSSL::X509List cert(cacert);
-BearSSL::X509List client_crt(client_cert);
-BearSSL::PrivateKey key(privkey);
 
 void InitMqtt() 
 { 
-    //espClient.setTrustAnchors(&cert);         
-	espClient.setInsecure();
-	espClient.setClientRSACert(&client_crt, &key);
-	//setClock();
+     
+    #ifdef MQTT_TLS
+	    //espClient.setTrustAnchors(&cert);
+		espClient.setInsecure();
+		espClient.setClientRSACert(&client_crt, &key);
+		//setClock();
+	#endif
 	mqttClient.setServer(MQTT_BROKER_ADRESS, MQTT_PORT);
 	//mqttClient.setCallback(OnMqttReceived);
+	
 }
 
 // connect MQTT

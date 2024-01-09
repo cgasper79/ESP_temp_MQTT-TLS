@@ -105,11 +105,13 @@ void loop() {
 	Serial.println(getHumidity());
  
 
-  //Deep Sleep for 1 hour only 10 seconds connected
-  if (currentMillis >= intervalSleep){
-    Serial.println ("Go to sleep");
-    ESP.deepSleep(3600000000);
-  }
+  //Deep Sleep only 10 seconds connected
+  #ifdef ESP_SLEEP 
+    if (currentMillis >= intervalSleep){
+      Serial.println ("Go to sleep");
+      ESP.deepSleep(ESP_SLEEP);
+    }
+  #endif
 
 }
 
