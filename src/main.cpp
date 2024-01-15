@@ -25,7 +25,6 @@
 #include "NtpUtils.hpp"
 #include "WifiUtils.hpp"
 #include "MQTT.hpp"
-#include "MqttUtils.hpp"
 
 
 #define DHTPIN 13     // Digital pin connected to the DHT sensor - Pin D7 (GPIO13)
@@ -34,6 +33,8 @@
 // Pin 15 can work but DHT must be disconnected during program upload.
 #define DHTTYPE    DHT11     // DHT 11
 
+//Global Variables
+bool g_InitSystem = true;
 
 DHT_Unified dht(DHTPIN, DHTTYPE);
 uint32_t delayMS;
@@ -92,18 +93,43 @@ void waitRead(){
 void loop() {
   
   HandleMqtt();
- 
+
+  //Send HomeAssistant Discovery
+  if(g_InitSystem)
+  {
+    delay(100);
+    g_InitSystem = false;
+    Serial.println("INIT SYSTEM...");
+    MqttHomeAssistantDiscovery();     // Send Discovery Data
+  }
+
   // Enable DHT11
   digitalWrite(DHTVCC, HIGH);
   waitRead();
-   
+
+  
+  /* 
   //Read Temperature and humidity and publish in topic
   PublisMqtt(MQTT_PUB_TOPIC_TEMP,getTemperature());
   Serial.println(getTemperature());
   waitRead();
   PublisMqtt(MQTT_PUB_TOPIC_HUMIDITY,getHumidity());
 	Serial.println(getHumidity());
- 
+ */
+
+  StaticJsonDocument<200> payload;  
+  payload["temp"] = 26;
+  payload["hum"] = 30;
+
+  String strPayload;
+  serializeJson(payload, strPayload);
+
+  if(mqttClient.connected())
+  {
+    mqttClient.publish(MQTT_STATUS_TOPIC.c_str(), strPayload.c_str()); 
+    //Serial.println("MQTT: Send Data!!!");
+  }
+
 
   //Deep Sleep only 10 seconds connected
   #ifdef ESP_SLEEP 
