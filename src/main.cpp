@@ -76,7 +76,7 @@ void loop()
     Serial.println("INIT SYSTEM...");
     MqttHomeAssistantDiscovery();     // Send Discovery Data
     Serial.println ("Sensor Unique ID: " + MQTT_UNIQUE_ID);
-    Serial.println ("Sensor FW Version: ", MQTT_SW_VERSION);
+    Serial.println ("Sensor FW Version: " + String(MQTT_SW_VERSION));
   }
 
   // Enable DHT11 and Read Temperature and humidity and Publish in topic
