@@ -17,9 +17,16 @@
 void MqttHomeAssistantDiscovery()
 {
 	String discoveryTopic;
-    String payload;
-    String strPayload;
+	String payload;
+	String strPayload;
 
+    //Generate de MQTT UNIQUE ID FROM MAC
+    for (int i=8; i < macAddr.length(); i++ )
+    {
+        MQTT_UNIQUE_ID.concat(String(macAddr[i],HEX));
+    }
+
+    //Send Home Assistant Discovery
 	if (mqttClient.connected())
 	{
 		Serial.println("SEND HOME ASSISTANT DISCOVERY!!!");
@@ -96,7 +103,6 @@ void OnMqttReceived(char* topic, byte* inFrame, unsigned int length)
     {
         if(messageTemp == "online")
             MqttHomeAssistantDiscovery();
-			mqttClient.loop();
     }
 }
 
@@ -155,14 +161,23 @@ void HandleMqtt()
 }
 
 
+//Publish Mqtt
 
-String payload;
-void PublisMqtt(const char* topic , unsigned long data)
+void PublisMqtt(float temp, float hum)
 {
-	payload = "";
-	payload = String(data);
-	mqttClient.publish(topic, (char*)payload.c_str());
+    StaticJsonDocument<200> payload;  
+    payload["temp"] = temp;
+    payload["hum"] = hum;
+
+    String strPayload;
+    serializeJson(payload, strPayload);
+
+    if(mqttClient.connected())
+    {
+        mqttClient.publish(MQTT_STATUS_TOPIC.c_str(), strPayload.c_str()); 
+    }
+	
 }
 
-String content = "";
+
 

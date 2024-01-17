@@ -22,7 +22,6 @@ void ConnectWiFi_STA(bool useStaticIP = false)
    Serial.print("ESP Mac Address: ");
    Serial.println(WiFi.macAddress());
    macAddr = WiFi.macAddress();
-   MQTT_UNIQUE_ID =  String(macAddr[0],HEX) +String(macAddr[1],HEX) +String(macAddr[2],HEX) +String(macAddr[3],HEX) + String(macAddr[4],HEX) + String(macAddr[5],HEX);
 
    Serial.print("Subnet Mask: ");
    Serial.println(WiFi.subnetMask());
