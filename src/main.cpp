@@ -3,7 +3,7 @@
  * @author cgasper79
  * @brief 
  * @version 2.1
- * @date 2024-01-15
+ * @date 2024-01-29
  * 
  * @copyright Copyright (c) 2024
  * 
@@ -44,7 +44,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT); // Led Wifi connection
   pinMode(DHTVCC, OUTPUT); // Power Supply DHT11 - Pin D1 (GPIO5)
 
-  ConnectWiFi_STA(true); //Ini WIFI
+  ConnectWiFi_STA(false); //False with DHCP or True with Static IP
   InitMqtt(); //Ini MQTT
   
   // Initialize sensor device.
@@ -93,7 +93,7 @@ void loop()
   }
   waitRead();
   Serial.println("Temp:" + String(TempSensor) + " " + "Hum:" + String(HumSensor));
-  PublisMqtt(TempSensor, HumSensor);
+  PublisMqtt(round(TempSensor), round(HumSensor));
 
   //Deep Sleep only 10 seconds connected
   #ifdef ESP_SLEEP 
