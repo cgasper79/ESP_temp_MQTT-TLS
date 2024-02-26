@@ -2,17 +2,15 @@
  * @file main.cpp
  * @author cgasper79
  * @brief 
- * @version 1.1-TLS
- * @date 2024-01-08
+ * @version 2.1
+ * @date 2024-01-29
  * 
  * @copyright Copyright (c) 2024
  * 
  */
 
-
 #include <Adafruit_Sensor.h>
-//#include <DHT.h>
-#include <DHT_U.h>
+#include <DHT.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
@@ -20,61 +18,37 @@
 #include <WiFiClientSecure.h> 
 #include <time.h>
 
-
 #include "config.h"
 #include "NtpUtils.hpp"
 #include "WifiUtils.hpp"
 #include "MQTT.hpp"
-#include "MqttUtils.hpp"
 
 
-#define DHTPIN 13     // Digital pin connected to the DHT sensor - Pin D7 (GPIO13)
-#define DHTVCC 5      // Pin connected to the VCC DHT sensor - Pin D1 (GPIO5)
+#define DHTPIN    13     // Digital pin connected to the DHT sensor - Pin D7 (GPIO13)
+#define DHTVCC    5      // Pin connected to the VCC DHT sensor - Pin D1 (GPIO5)
 // Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
 // Pin 15 can work but DHT must be disconnected during program upload.
-#define DHTTYPE    DHT11     // DHT 11
+#define DHTTYPE   DHT11  // DHT 11
+
+//Global Variables
+bool g_InitSystem = true;
+float TempSensor;
+float HumSensor;
+DHT dht(DHTPIN, DHTTYPE);
+uint32_t delayMS = 1000;
 
 
-DHT_Unified dht(DHTPIN, DHTTYPE);
-uint32_t delayMS;
-sensors_event_t event;
-
-
+//Setup
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT); // Led Wifi connection
   pinMode(DHTVCC, OUTPUT); // Power Supply DHT11 - Pin D1 (GPIO5)
 
-  ConnectWiFi_STA(true); //Ini WIFI
+  ConnectWiFi_STA(false); //False with DHCP or True with Static IP
   InitMqtt(); //Ini MQTT
   
-
   // Initialize sensor device.
   dht.begin();
-  sensor_t sensor;
-  dht.temperature().getSensor(&sensor);
-  dht.humidity().getSensor(&sensor);
-
-  // Set delay between sensor readings based on sensor details.
-  delayMS = sensor.min_delay / 1000;
-}
-
-// Read Temperature
-float getTemperature(){
-   dht.temperature().getEvent(&event);
-   while (isnan(event.temperature)) {
-    dht.temperature().getEvent(&event);
-   }
-   return event.temperature;
-}
-
-// Read Humidity
-float getHumidity(){
-   dht.humidity().getEvent(&event);
-   while (isnan(event.temperature)) {
-    dht.humidity().getEvent(&event);
-   }
-   return event.relative_humidity;
 }
 
 //Wait to read
@@ -89,21 +63,37 @@ void waitRead(){
 
 //Main Loop
 
-void loop() {
+void loop() 
+{
   
   HandleMqtt();
- 
-  // Enable DHT11
+
+  //Send HomeAssistant Discovery
+  if(g_InitSystem)
+  {
+    delay(100);
+    g_InitSystem = false;
+    Serial.println("INIT SYSTEM...");
+    MqttHomeAssistantDiscovery();     // Send Discovery Data
+    Serial.println ("Sensor Unique ID: " + MQTT_UNIQUE_ID);
+    Serial.println ("Sensor FW Version: " + String(MQTT_SW_VERSION));
+  }
+
+  // Enable DHT11 and Read Temperature and humidity and Publish in topic
   digitalWrite(DHTVCC, HIGH);
+
+  while ((isnan(HumSensor) || isnan(TempSensor)) || ((HumSensor == 0) || (TempSensor == 0)))
+  {
+    Serial.println("Read Sensor Error");
+    waitRead();
+    HumSensor = dht.readHumidity();
+    waitRead();
+    TempSensor = dht.readTemperature();
+    delay(100);
+  }
   waitRead();
-   
-  //Read Temperature and humidity and publish in topic
-  PublisMqtt(MQTT_PUB_TOPIC_TEMP,getTemperature());
-  Serial.println(getTemperature());
-  waitRead();
-  PublisMqtt(MQTT_PUB_TOPIC_HUMIDITY,getHumidity());
-	Serial.println(getHumidity());
- 
+  Serial.println("Temp:" + String(TempSensor) + " " + "Hum:" + String(HumSensor));
+  PublisMqtt(round(TempSensor), round(HumSensor));
 
   //Deep Sleep only 10 seconds connected
   #ifdef ESP_SLEEP 

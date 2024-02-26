@@ -9,6 +9,14 @@ void ConnectWiFi_STA(bool useStaticIP = false)
    { 
      delay(100);  
      Serial.print('.'); 
+     currentMillis = millis();
+     //Save battery if don't connect WIFI
+     #ifdef ESP_SLEEP
+      if ((currentMillis - previousWifiMillis >=intervalWifi)){
+        Serial.println ("Go to sleep");
+        ESP.deepSleep(ESP_SLEEP);
+      }
+    #endif
    }
 
    Serial.println("");
