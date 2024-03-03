@@ -14,6 +14,11 @@ This project consists of creating a temperature and humidity sensor using a Wemo
 - Necessary libraries for the DHT11 sensor and MQTT communication
 - MQTT broker with TLS/SSL support (e.g., Mosquitto)
 
+
+### Schematic
+![Schematic](https://github.com/cgasper79/ESP_temp_MQTT-TLS/assets/51058790/48172904-360a-4b9c-a591-77bfcdc4dc29)
+
+
 ### Setup:
 
 1. **Hardware:**
