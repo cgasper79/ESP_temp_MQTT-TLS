@@ -1,5 +1,5 @@
 //Version
-String VERSION = "v2.1";
+String VERSION = "v2.2";
 
 //define user, if you don't use comment please
 #define MQTT_TLS  // to use MQTT TLS 

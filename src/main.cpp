@@ -93,7 +93,7 @@ void loop()
   }
   waitRead();
   Serial.println("Temp:" + String(TempSensor) + " " + "Hum:" + String(HumSensor));
-  PublisMqtt(round(TempSensor), round(HumSensor));
+  PublisMqtt(VERSION, round(TempSensor), round(HumSensor));
 
   //Deep Sleep only 10 seconds connected
   #ifdef ESP_SLEEP 

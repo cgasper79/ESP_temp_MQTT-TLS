@@ -135,6 +135,7 @@ void ConnectMqtt()
 	while (!mqttClient.connected())
 	{
 		Serial.print("Starting MQTT connection...");
+        currentMillis = millis();
 		if (mqttClient.connect(MQTT_CLIENT_NAME.c_str(), MQTT_USER, MQTT_PASS))
 		{
 			SuscribeMqtt();
@@ -143,9 +144,16 @@ void ConnectMqtt()
 		{
 			Serial.print("Failed MQTT connection, rc=");
 			Serial.print(mqttClient.state());
-			Serial.println(" try again in 5 seconds");
+			Serial.println(" try again in 1 seconds");
+			delay(1000);
 
-			delay(5000);
+            //Save battery if don't connect to Broker
+            #ifdef ESP_SLEEP 
+                if (currentMillis >= intervalSleep){
+                    Serial.println ("Go to sleep");
+                    ESP.deepSleep(ESP_SLEEP);
+                }
+            #endif
 		}
 	}
 }
@@ -163,9 +171,10 @@ void HandleMqtt()
 
 //Publish Mqtt
 
-void PublisMqtt(float temp, float hum)
+void PublisMqtt(String version, float temp, float hum)
 {
     StaticJsonDocument<200> payload;  
+    payload["FW"] = version;
     payload["temp"] = temp;
     payload["hum"] = hum;
 
